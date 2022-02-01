@@ -22,3 +22,5 @@ project(
 
 add_subdirectory(lib)
 add_subdirectory(tool)
+enable_testing()
+add_subdirectory(test)
