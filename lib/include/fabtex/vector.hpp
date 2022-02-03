@@ -21,8 +21,8 @@ namespace fabtex
             typedef pointer iterator;
             typedef const_pointer const_iterator;
 
-            vec_impl() : m_data{ value_type(0); } {}
             vec_impl(const vec_impl&) = default;
+            vec_impl(vec_impl&&) = default;
             template <typename... U>
             vec_impl(U&&... args)
                 : m_data{ args... } { static_assert(sizeof...(args) == N, "sizeof...(args) == N failed"); };
@@ -60,6 +60,8 @@ namespace fabtex
             const_iterator cbegin() const noexcept { return data(); }
             const_iterator cend() const noexcept { return data() + N; }
 
+            vec_impl& operator=(const vec_impl&) = default;
+
         protected:
             T m_data[N];
         };
@@ -81,6 +83,7 @@ namespace fabtex
         typedef typename vec_impl::iterator iterator;
         typedef typename vec_impl::const_iterator const_iterator;
 
+        vec() : vec(static_cast<value_type>(0)) {}
         explicit vec(const_reference v) : vec_impl(v, v) {}
         vec(const_reference v0, const_reference v1)
             : vec_impl({ v0, v1 }) {}
@@ -149,7 +152,8 @@ namespace fabtex
         typedef typename vec_impl::iterator iterator;
         typedef typename vec_impl::const_iterator const_iterator;
 
-        vec(const_reference v) : vec_impl(v, v, v) {}
+        vec() : vec(static_cast<value_type>(0)) {}
+        explicit vec(const_reference v) : vec_impl(v, v, v) {}
         vec(const_reference v0, const_reference v1, const_reference v2)
             : vec_impl({ v0, v1, v2 }) {}
 

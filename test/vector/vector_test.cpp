@@ -24,6 +24,10 @@ using namespace fabtex;
 
 TEST(TestVector, BasicFunctions)
 {
+    vec<2, int> default_ctor_v2;
+    EXPECT_EQ(default_ctor_v2[0], 0);
+    EXPECT_EQ(default_ctor_v2[1], 0);
+
     const vec<2, int> iv2_0(-1);
     static_assert(iv2_0.size() == 2, "iv2_0.size() == 2 failed");
     EXPECT_EQ(iv2_0[0], -1);
@@ -44,6 +48,11 @@ TEST(TestVector, BasicFunctions)
     EXPECT_FALSE(iv2_2 == iv2_0);
     EXPECT_TRUE(iv2_2 != iv2_0);
     EXPECT_TRUE(iv2_2 == iv2_1);
+
+    vec<3, int> default_ctor_v3;
+    EXPECT_EQ(default_ctor_v3[0], 0);
+    EXPECT_EQ(default_ctor_v3[1], 0);
+    EXPECT_EQ(default_ctor_v3[2], 0);
 
     vec<3, int> iv3(2, 3, 4);
     EXPECT_EQ(iv3[0], 2);
