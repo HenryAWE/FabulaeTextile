@@ -8,6 +8,7 @@ Simple program for generating images of Chinese characters by components and str
 |---|---|---|---|
 | SDL | 2.0.17+ | zlib |  |
 | ImGui | `64d910a` | MIT | included in source |
+| stb | `af1a5bc` | Public Domain | included in source |
 ## Tests
 | Library Name | Version (At Least) | License |
 |---|---|---|
