@@ -17,6 +17,7 @@ TEST(TestBitmap, BasicFunctions)
     {
         for(std::size_t j = 0; j < 4; ++j)
         {
+            EXPECT_EQ((img.index({ i, j })), (img[{ i, j}]));
             for(auto& k : img.index({ i, j }))
             {
                 EXPECT_TRUE(img.valid({ i, j }));
@@ -33,6 +34,7 @@ TEST(TestBitmap, BasicFunctions)
     {
         for (std::size_t j = 0; j < 8; ++j)
         {
+            EXPECT_EQ((img.index({ i, j })), (img[{ i, j}]));
             for (auto& k : img.index({ i, j }))
             {
                 EXPECT_TRUE(img.valid({ i, j }));

@@ -22,6 +22,8 @@ namespace fabtex
         typedef vec<2, size_type> index_type;
         typedef typename container_type::reference reference;
         typedef typename container_type::const_reference const_reference;
+        typedef value_type* pointer;
+        typedef const value_type* const_pointer;
 
         basic_bitmap() : m_size(T(0)) {}
         basic_bitmap(const basic_bitmap&) = default;
@@ -39,6 +41,11 @@ namespace fabtex
         {
             return m_data[locate(idx)];
         }
+        reference operator[](index_type idx) { return index(idx); }
+        const_reference operator[](index_type idx) const { return index(idx); }
+
+        pointer data() noexcept { return &m_data.data()[0]; }
+        const_pointer data() const noexcept { return &m_data.data()[0]; }
 
         void resize(index_type new_size)
         {
@@ -70,6 +77,19 @@ namespace fabtex
         bool valid(index_type idx) const noexcept
         {
             return idx[0] < m_size[0] && idx[1] < m_size[1];
+        }
+
+        void rect(index_type pos, index_type rect_size, const_reference val)
+        {
+            for(size_type i = 0; i < rect_size[0]; ++i)
+            {
+                for(size_type j = 0; j < rect_size[1]; ++j)
+                {
+                    auto idx = pos + index_type(i, j);
+                    if (valid(idx))
+                        index(idx) = val;
+                }
+            }
         }
 
     private:
