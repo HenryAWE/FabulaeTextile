@@ -84,6 +84,8 @@ namespace fabtex
         typedef typename vec_impl::const_iterator const_iterator;
 
         vec() : vec(static_cast<value_type>(0)) {}
+        template <typename U>
+        vec(const vec<2, U>& v) : vec_impl(value_type(v[0]), value_type(v[1])) {}
         explicit vec(const_reference v) : vec_impl(v, v) {}
         vec(const_reference v0, const_reference v1)
             : vec_impl({ v0, v1 }) {}
@@ -153,6 +155,8 @@ namespace fabtex
         typedef typename vec_impl::const_iterator const_iterator;
 
         vec() : vec(static_cast<value_type>(0)) {}
+        template <typename U>
+        vec(const vec<3, U>& v) : vec_impl(value_type(v[0]), value_type(v[1]), value_type(v[2])) {}
         explicit vec(const_reference v) : vec_impl(v, v, v) {}
         vec(const_reference v0, const_reference v1, const_reference v2)
             : vec_impl({ v0, v1, v2 }) {}
