@@ -90,7 +90,7 @@ int SDL_main(int argc, char* argv[])
         io.Fonts->GetGlyphRangesChineseSimplifiedCommon()
     );
     auto font_ready = std::async(std::launch::async, [&io]{ return io.Fonts->Build(); });
-    ImGui_ImplSDL2_InitForSDLRenderer(win);
+    ImGui_ImplSDL2_InitForSDLRenderer(win, ren);
     ImGui_ImplSDLRenderer_Init(ren);
     font_ready.get();
     ImGui_ImplSDLRenderer_CreateDeviceObjects();
