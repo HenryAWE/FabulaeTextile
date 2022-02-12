@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.21)
 
 if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
@@ -21,6 +21,12 @@ project(
 )
 
 add_subdirectory(lib)
-add_subdirectory(tool)
-enable_testing()
-add_subdirectory(test)
+option(FABTEX_BUILD_TOOL "Build tool" ON)
+if(${FABTEX_BUILD_TOOL})
+    add_subdirectory(tool)
+endif()
+option(FABTEX_BUILD_TEST "Build the test suites" ON)
+if(${FABTEX_BUILD_TEST})
+    enable_testing()
+    add_subdirectory(test)
+endif()
