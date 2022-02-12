@@ -106,6 +106,8 @@ int SDL_main(int argc, char* argv[])
     auto& app = visualizer::instance();
     app.init(win, ren);
 
+    ImFabtex::AppData appdata;
+
     ImFabtex::ShowStrokeData data;
     data.stroke;
     data.texture = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STATIC, 100, 100);
@@ -138,6 +140,27 @@ int SDL_main(int argc, char* argv[])
                 ImVec4(0.0f, 1.0f, 1.0f, 1.0f),
                 "Fabulae Textile"
             );
+
+            ImGui::Separator();
+            if(ImGui::BeginMenu("文件/File"))
+            {
+                if(ImGui::MenuItem("退出/Quit"))
+                {
+                    SDL_QuitEvent event{};
+                    event.type = SDL_QUIT;
+                    event.timestamp = SDL_GetTicks();
+                    SDL_PushEvent(reinterpret_cast<SDL_Event*>(&event));
+                }
+                ImGui::EndMenu();
+            }
+            if(ImGui::BeginMenu("帮助/Help"))
+            {
+                if(ImGui::MenuItem("关于/About"))
+                {
+                    appdata.show_about = true;
+                }
+                ImGui::EndMenu();
+            }
             ImGui::EndMainMenuBar();
         }
 
@@ -146,6 +169,9 @@ int SDL_main(int argc, char* argv[])
         {
             save_bitmap(data.stroke.generate_preview({ 100, 100 }), "bitmap.bmp");
         }
+
+        if(appdata.show_about)
+            ImFabtex::AboutVisualizer(&appdata.show_about);
 
         ImGui::Render();
 

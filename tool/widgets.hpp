@@ -10,6 +10,11 @@ namespace ImFabtex
 {
     ImVec2 GetImVec(fabtex::vec<2, float> v) noexcept;
 
+    struct AppData
+    {
+        bool show_about = false;
+    };
+
     struct ShowStrokeData
     {
         fabtex::stroke_h stroke;
@@ -62,4 +67,6 @@ namespace ImFabtex
             ++anchor_id;
         }
     }
+
+    void AboutVisualizer(bool* p_open = nullptr);
 }
