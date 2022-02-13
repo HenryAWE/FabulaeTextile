@@ -47,24 +47,7 @@ TEST(TestVector, BasicFunctions)
     EXPECT_EQ(iv2_2[1], 2);
     EXPECT_FALSE(iv2_2 == iv2_0);
     EXPECT_TRUE(iv2_2 != iv2_0);
-    EXPECT_TRUE(iv2_2 == iv2_1);
-
-    vec<3, int> default_ctor_v3;
-    EXPECT_EQ(default_ctor_v3[0], 0);
-    EXPECT_EQ(default_ctor_v3[1], 0);
-    EXPECT_EQ(default_ctor_v3[2], 0);
-
-    vec<3, int> iv3(2, 3, 4);
-    EXPECT_EQ(iv3[0], 2);
-    EXPECT_EQ(iv3[1], 3);
-    EXPECT_EQ(iv3[2], 4);
-
-    for(auto& i : iv3)
-        i += 1;
-    EXPECT_EQ(iv3[0], 3);
-    EXPECT_EQ(iv3[1], 4);
-    EXPECT_EQ(iv3[2], 5);
-}
+    EXPECT_TRUE(iv2_2 == iv2_1);}
 
 TEST(TestVector, MathOperationsVec2)
 {
@@ -82,23 +65,6 @@ TEST(TestVector, MathOperationsVec2)
     EXPECT_EQ((vec<2, int>(6, 4) / 2), (vec<2, int>(3, 2)));
 
     EXPECT_EQ((-vec<2, int>(6, 4)), (vec<2, int>(-6, -4)));
-}
-TEST(TestVector, MathOperationsVec3)
-{
-    vec<3, int> v0(1, 2, 3);
-    vec<3, int> v1(4, 5, 6);
-
-    EXPECT_EQ((v0 + vec<3, int>(3, 3, 3)), v1);
-    EXPECT_EQ((v0 - vec<3, int>(3, 3, 3)), (vec<3, int>(-2, -1, 0)));
-    EXPECT_EQ(v0 + 3, v1);
-    EXPECT_EQ(3 + v0, v1);
-
-    EXPECT_EQ((vec<3, int>(6, 4, 2) * 2), (vec<3, int>(12, 8, 4)));
-    EXPECT_EQ((2 * vec<3, int>(6, 4, 2)), (vec<3, int>(12, 8, 4)));
-
-    EXPECT_EQ((vec<3, int>(6, 4, 2) / 2), (vec<3, int>(3, 2, 1)));
-
-    EXPECT_EQ((-vec<3, int>(6, 4, 2)), (vec<3, int>(-6, -4, -2)));
 }
 
 int main(int argc, char* argv[])

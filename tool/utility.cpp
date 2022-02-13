@@ -35,7 +35,7 @@ namespace fabtextool
             return false;
 
         return stbi_write_bmp(
-            file.u8string().c_str(),
+            reinterpret_cast<const char*>(file.u8string().c_str()),
             static_cast<int>(bm.size()[0]),
             static_cast<int>(bm.size()[1]),
             4,

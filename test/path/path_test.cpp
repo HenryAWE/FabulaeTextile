@@ -37,7 +37,7 @@ TEST(TestPath, BasicFunctions)
 
 TEST(TestPath, Operators)
 {
-    path p = "1";
+    path p("1");
     p = p / ("2" + p);
     EXPECT_EQ(p, "1/21");
     p = p / ("2" + p);
@@ -62,7 +62,7 @@ TEST(TestPath, Iterator)
     path p("1/1/1/1/1");
 
     std::size_t count = 0;
-    for(auto& i : p)
+    for(auto i : p)
     {
         EXPECT_EQ(i, "1");
         ++count;
@@ -71,7 +71,7 @@ TEST(TestPath, Iterator)
 
     p = "1/2/3/4/5";
     int val = 1;
-    for(auto& i : p)
+    for(auto i : p)
     {
         EXPECT_EQ(i, std::to_string(val));
         ++val;
