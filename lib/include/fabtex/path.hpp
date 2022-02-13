@@ -228,7 +228,7 @@ namespace fabtex
                 : m_it(it) {}
 
         public:
-            typedef typename basic_path value_type;
+            typedef basic_path value_type;
 
             path_iterator() = default;
             path_iterator(const path_iterator&) = default;

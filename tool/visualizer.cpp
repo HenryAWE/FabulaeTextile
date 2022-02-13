@@ -43,7 +43,8 @@ namespace fabtextool
     }
 }
 
-int SDL_main(int argc, char* argv[])
+// Will be replaced to SDL_main on Windows by the macro of SDL
+int main(int argc, char* argv[])
 {
     using namespace fabtextool;
 
