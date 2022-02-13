@@ -103,6 +103,11 @@ namespace fabtex
                 append(p);
         }
 
+        void clear() noexcept
+        {
+            m_data.clear();
+        }
+
         string_type string() const
         {
             string_type result;
@@ -155,14 +160,53 @@ namespace fabtex
         {
             return compare(basic_path(view));
         }
-
-        bool operator==(const basic_path& rhs) const noexcept
+        int compare(const value_type* ptr) const
         {
-            return compare(rhs) == 0;
+            return compare(string_view_type(ptr));
         }
-        bool operator==(string_view_type rhs) const noexcept
+
+        friend bool operator==(const basic_path& lhs, const basic_path& rhs) noexcept
         {
-            return compare(rhs) == 0;
+            return lhs.compare(rhs) == 0;
+        }
+        friend bool operator==(const basic_path& lhs, string_view_type rhs)
+        {
+            return lhs == basic_path(rhs);
+        }
+        friend bool operator==(string_view_type lhs, const basic_path& rhs)
+        {
+            return basic_path(lhs) == rhs;
+        }
+        friend bool operator==(const basic_path& lhs, const value_type* rhs)
+        {
+            return lhs == string_view_type(rhs);
+        }
+        friend bool operator==(const value_type* lhs, const basic_path& rhs)
+        {
+            return string_view_type(lhs) == rhs;
+        }
+
+        friend std::strong_ordering operator<=>(const basic_path& lhs, const basic_path& rhs) noexcept
+        {
+            int result =  lhs.compare(rhs);
+            return result == 0 ? std::strong_ordering::equal :
+                result < 0 ? std::strong_ordering::less : std::strong_ordering::greater;
+        }
+        friend std::strong_ordering operator<=>(const basic_path& lhs, string_view_type rhs)
+        {
+            return lhs <=> basic_path(rhs);
+        }
+        friend std::strong_ordering operator<=>(string_view_type lhs, const basic_path& rhs)
+        {
+            return basic_path(lhs) <=> rhs;
+        }
+        friend std::strong_ordering operator<=>(const basic_path& lhs, const value_type* rhs)
+        {
+            return lhs <=> string_view_type(rhs);
+        }
+        friend std::strong_ordering operator<=>(const value_type* lhs, const basic_path& rhs)
+        {
+            return string_view_type(lhs) <=> rhs;
         }
 
         friend basic_path operator/(const basic_path& lhs, const basic_path& rhs)

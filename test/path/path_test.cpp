@@ -33,6 +33,8 @@ TEST(TestPath, BasicFunctions)
     p.concat("1/2");
     EXPECT_EQ(p.string(), "1/2");
     EXPECT_EQ(p, path("/1//2"));
+    p.clear();
+    EXPECT_TRUE(p.empty());
 }
 
 TEST(TestPath, Operators)
@@ -43,6 +45,7 @@ TEST(TestPath, Operators)
     p = p / ("2" + p);
     EXPECT_EQ(p, "1/21/21/21");
     p = "";
+    EXPECT_NE(p, "1/21/21/21");
     EXPECT_TRUE(p.empty());
 
     EXPECT_LE(p.compare("1"), 0);
@@ -51,8 +54,11 @@ TEST(TestPath, Operators)
     p /= "3";
     EXPECT_EQ(p, "2/3");
     EXPECT_GT(p.compare("2/1"), 0);
+    EXPECT_GT(p, "2/1");
     EXPECT_LE(p.compare("2/4"), 0);
+    EXPECT_LE(p, "2/4");
     EXPECT_LE(p.compare("2/3/4"), 0);
+    EXPECT_LE(p, "2/3/4");
     p += "4";
     EXPECT_EQ(p, "2/34");
 }
