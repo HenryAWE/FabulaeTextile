@@ -6,6 +6,10 @@ Simple program for generating images of Chinese characters by components and str
 [`doc/design.md`](doc/design.md)
 
 # External Dependencies
+## Main Library
+| Library Name | Version (At Least) | License |
+|---|---|---|
+| RapdidXml | 1.13 | Boost Software License |
 ## Visualizer
 | Library Name | Version (At Least) | License | Note |
 |---|---|---|---|
