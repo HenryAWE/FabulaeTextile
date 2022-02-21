@@ -28,6 +28,10 @@ namespace fabtex
         basic_path() = default;
         basic_path(const basic_path&) = default;
         basic_path(basic_path&&) = default;
+        basic_path(const value_type* ptr)
+            : basic_path(string_view_type(ptr)) {}
+        basic_path(const std::string& str)
+            : basic_path(string_view_type(str)) {}
         basic_path(string_view_type view)
         {
             assign(view);
@@ -42,11 +46,29 @@ namespace fabtex
             assign(view);
             return *this;
         }
+        basic_path& operator=(const value_type* ptr)
+        {
+            assign(ptr);
+            return *this;
+        }
+        basic_path& operator=(const string_type& str)
+        {
+            assign(str);
+            return *this;
+        }
 
         void assign(string_view_type view)
         {
             m_data.clear();
             append(view);
+        }
+        void assign(const value_type* ptr)
+        {
+            assign(string_view_type(ptr));
+        }
+        void assign(const string_type& str)
+        {
+            assign(string_view_type(str));
         }
         void assign(const basic_path& p)
         {
@@ -61,6 +83,10 @@ namespace fabtex
                 m_data.emplace_back(result.first, result.second);
                 result = walk_path({ result.second, view.end() });
             }
+        }
+        void append(const value_type* ptr)
+        {
+            append(string_view_type(ptr));
         }
         void append(const basic_path& p)
         {
@@ -82,6 +108,14 @@ namespace fabtex
         void concat(string_view_type view)
         {
             concat(basic_path(view));
+        }
+        void concat(const value_type* ptr)
+        {
+            concat(basic_path(ptr));
+        }
+        void concat(const string_type& str)
+        {
+            concat(string_view_type(str));
         }
         void concat(const basic_path& p)
         {
@@ -177,11 +211,15 @@ namespace fabtex
         {
             return basic_path(lhs) == rhs;
         }
-        friend bool operator==(const basic_path& lhs, const value_type* rhs)
+        friend bool operator==(const value_type* lhs, const basic_path& rhs)
+        {
+            return string_view_type(lhs) == rhs;
+        }
+        friend bool operator==(const basic_path& lhs, const string_type& rhs)
         {
             return lhs == string_view_type(rhs);
         }
-        friend bool operator==(const value_type* lhs, const basic_path& rhs)
+        friend bool operator==(const string_type& lhs, const basic_path& rhs)
         {
             return string_view_type(lhs) == rhs;
         }
@@ -219,7 +257,23 @@ namespace fabtex
         {
             return lhs / basic_path(rhs);
         }
+        friend basic_path operator/(const basic_path& lhs, const value_type* rhs)
+        {
+            return lhs / basic_path(rhs);
+        }
+        friend basic_path operator/(const basic_path& lhs, const string_type& rhs)
+        {
+            return lhs / basic_path(rhs);
+        }
         friend basic_path operator/(string_view_type lhs, const basic_path& rhs)
+        {
+            return basic_path(lhs) / rhs;
+        }
+        friend basic_path operator/(const value_type* lhs, const basic_path& rhs)
+        {
+            return basic_path(lhs) / rhs;
+        }
+        friend basic_path operator/(const string_type& lhs, const basic_path& rhs)
         {
             return basic_path(lhs) / rhs;
         }
@@ -227,6 +281,16 @@ namespace fabtex
         basic_path& operator/=(string_view_type view)
         {
             append(view);
+            return *this;
+        }
+        basic_path& operator/=(const value_type* ptr)
+        {
+            append(string_view_type(ptr));
+            return *this;
+        }
+        basic_path& operator/=(const string_type& str)
+        {
+            append(string_view_type(str));
             return *this;
         }
         basic_path& operator/=(const basic_path& p)
@@ -245,14 +309,40 @@ namespace fabtex
         {
             return lhs + basic_path(rhs);
         }
+        friend basic_path operator+(const basic_path& lhs, const value_type* rhs)
+        {
+            return lhs + basic_path(rhs);
+        }
+        friend basic_path operator+(const basic_path& lhs, const string_type& rhs)
+        {
+            return lhs + basic_path(rhs);
+        }
         friend basic_path operator+(string_view_type lhs, const basic_path& rhs)
         {
             return basic_path(lhs) + rhs;
         }
+        friend basic_path operator+(const value_type* lhs, const basic_path& rhs)
+        {
+            return basic_path(lhs) + rhs;
+        }
+        friend basic_path operator+(const string_type& lhs, const basic_path& rhs)
+        {
+            return basic_path(lhs) + rhs;
+        }
 
+        basic_path& operator+=(const value_type* ptr)
+        {
+            concat(ptr);
+            return *this;
+        }
         basic_path& operator+=(string_view_type view)
         {
             concat(view);
+            return *this;
+        }
+        basic_path& operator+=(const string_type& str)
+        {
+            concat(str);
             return *this;
         }
         basic_path& operator+=(const basic_path& p)
