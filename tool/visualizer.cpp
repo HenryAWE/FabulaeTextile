@@ -109,11 +109,6 @@ int main(int argc, char* argv[])
 
     ImFabtex::AppData appdata;
 
-    ImFabtex::ShowStrokeData data;
-    data.stroke;
-    data.texture = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STATIC, 100, 100);
-    update_texture(data.stroke.generate_preview({ 100, 100 }), (SDL_Texture*)data.texture);
-
     bool quit = false;
     while(!quit)
     {
@@ -165,12 +160,6 @@ int main(int argc, char* argv[])
             ImGui::EndMainMenuBar();
         }
 
-        ShowStroke("横", data);
-        if(ImGui::Button("Save Bitmap"))
-        {
-            save_bitmap(data.stroke.generate_preview({ 100, 100 }), "bitmap.bmp");
-        }
-
         if(appdata.show_about)
             ImFabtex::AboutVisualizer(&appdata.show_about);
 
@@ -181,8 +170,6 @@ int main(int argc, char* argv[])
         SDL_RenderPresent(ren);
     }
 
-    SDL_DestroyTexture((SDL_Texture*)data.texture);
-    data.texture = nullptr;
     app.quit();
 
     ImGui_ImplSDLRenderer_Shutdown();
