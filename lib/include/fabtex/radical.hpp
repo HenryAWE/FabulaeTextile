@@ -9,5 +9,7 @@ namespace fabtex
     class radical
     {
     public:
+        std::string name;
+        std::vector<stroke> strokes;
     };
 }
