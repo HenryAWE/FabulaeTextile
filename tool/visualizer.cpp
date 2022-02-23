@@ -1,9 +1,12 @@
 #include "visualizer.hpp"
 #include <future>
+#include <fstream>
+#include <sstream>
 #include <SDL.h>
 #include <imgui.h>
 #include <imgui_impl_sdl.h>
 #include <imgui_impl_sdlrenderer.h>
+#include <imfilebrowser.h>
 
 
 namespace fabtextool
@@ -108,6 +111,9 @@ int main(int argc, char* argv[])
     app.init(win, ren);
 
     ImFabtex::AppData appdata;
+    ImGui::FileBrowser filebrowser_open;
+    filebrowser_open.SetTitle("打开/Open");
+    filebrowser_open.SetTypeFilters({ ".xml" });
 
     bool quit = false;
     while(!quit)
@@ -140,6 +146,10 @@ int main(int argc, char* argv[])
             ImGui::Separator();
             if(ImGui::BeginMenu("文件/File"))
             {
+                if(ImGui::MenuItem("打开文件/Open File"))
+                {
+                    filebrowser_open.Open();
+                }
                 if(ImGui::MenuItem("退出/Quit"))
                 {
                     SDL_QuitEvent event{};
@@ -162,6 +172,35 @@ int main(int argc, char* argv[])
 
         if(appdata.show_about)
             ImFabtex::AboutVisualizer(&appdata.show_about);
+        ImFabtex::ShowParsedData(app.parser);
+
+        filebrowser_open.Display();
+        if(filebrowser_open.HasSelected())
+        {
+            auto file = filebrowser_open.GetSelected();
+            SDL_LogInfo(
+                SDL_LOG_CATEGORY_APPLICATION,
+                "Open file: %s",
+                file.u8string().c_str()
+            );
+            filebrowser_open.ClearSelected();
+            filebrowser_open.Close();
+
+            try
+            {
+                std::ifstream ifs(file);
+                std::stringstream ss;
+                ss << ifs.rdbuf();
+                app.parser.parse(ss.str());
+            }
+            catch(const std::exception& e)
+            {
+                visualizer::report_error(
+                    e.what(),
+                    (std::string("Parsing file \"") + file.string() + "\" failed").c_str()
+                );
+            }
+        }
 
         ImGui::Render();
 

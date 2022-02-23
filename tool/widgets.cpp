@@ -40,4 +40,73 @@ namespace ImFabtex
 
         ImGui::End();
     }
+
+    namespace detailed
+    {
+        const char* get_stroke_type_str(fabtex::stroke_type type)
+        {
+            using fabtex::stroke_type;
+            switch(type)
+            {
+            case stroke_type::heng:
+                return "heng";
+            case stroke_type::shu:
+                return "shu";
+            default:
+                return "(unknown)";
+            }
+        }
+    }
+
+    void ShowParsedData(
+        const fabtex::xml_parser& parsed,
+        bool* p_open
+    ) {
+        const int window_flags =
+            ImGuiWindowFlags_NoSavedSettings;
+        if(!ImGui::Begin("Parsed Data", p_open, window_flags))
+            ImGui::End();
+
+        ImGui::Text("笔画/Radical(s)");
+        for(std::size_t i = 0; i < parsed.radicals().size(); ++i)
+        {
+            ImGui::PushID(i);
+            auto strokes = parsed.radicals()[i].strokes;
+            ImGui::Text(
+                "Index-%d; Name \"%s\"; Stroke count=%d",
+                static_cast<int>(i),
+                parsed.radicals()[i].name.c_str(),
+                static_cast<int>(strokes.size())
+            );
+            if(ImGui::TreeNode("Strokes"))
+            {
+                for(std::size_t j = 0; j < strokes.size(); ++j)
+                {
+                    auto type = strokes[j].type();
+                    if(ImGui::TreeNode(
+                        (const void*)j,
+                        "Stroke-%d: type=%s(%d)",
+                        static_cast<int>(j),
+                        detailed::get_stroke_type_str(type),
+                        type
+                    )) {
+                        for(const auto& [src, dst] : strokes[j].connections)
+                        {
+                            ImGui::BulletText(
+                                "Anchor: from \"%s\" to \"%s\"",
+                                src.string().c_str(),
+                                dst.string().c_str()
+                            );
+                        }
+                        ImGui::TreePop();
+                    }
+                }
+                ImGui::TreePop();
+            }
+            ImGui::PopID();
+        }
+        ImGui::Separator();
+
+        ImGui::End();
+    }
 }

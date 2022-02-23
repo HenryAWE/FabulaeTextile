@@ -1,0 +1,18 @@
+<fabtex>
+    <radical name="U+5341">
+        <base>
+            <stroke type="h"></stroke>
+            <stroke type="s">
+                <anchor src="b1" dst="../0/b1"></anchor>
+            </stroke>
+        </base>
+    </radical>
+    <character name="12">
+        <base>
+            <structure type="left_to_right">
+                <left>U+5341</left>
+                <right>U+5341</right>
+            </structure>
+        </base>
+    </character>
+</fabtex>

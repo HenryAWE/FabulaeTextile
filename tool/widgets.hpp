@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <imgui.h>
 #include <fabtex.hpp>
+#include <fabtex/data.hpp>
 
 
 namespace ImFabtex
@@ -16,4 +17,9 @@ namespace ImFabtex
     };
 
     void AboutVisualizer(bool* p_open = nullptr);
+
+    void ShowParsedData(
+        const fabtex::xml_parser& parsed,
+        bool* p_open = nullptr
+    );
 }

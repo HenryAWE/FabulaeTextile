@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <fabtex.hpp>
+#include <fabtex/data.hpp>
 #include "widgets.hpp"
 #include "utility.hpp"
 
@@ -24,6 +25,8 @@ namespace fabtextool
             const char* msg,
             const char* title = ""
         );
+
+        fabtex::xml_parser parser;
 
     private:
         SDL_Window* m_win = nullptr;
