@@ -66,11 +66,14 @@ namespace ImFabtex
         const int window_flags =
             ImGuiWindowFlags_NoSavedSettings;
         if(!ImGui::Begin("Parsed Data", p_open, window_flags))
+        {
             ImGui::End();
+            return;
+        }
 
         const fabtex::bitmap_rgba8888::index_type bitmap_size{ 512 };
 
-        ImGui::Text("笔画/Radical(s)");
+        ImGui::Text("部首/Radical(s)");
         for(std::size_t i = 0; i < parsed.radicals().size(); ++i)
         {
             ImGui::PushID(i);
@@ -82,7 +85,7 @@ namespace ImFabtex
                 static_cast<int>(strokes.size())
             );
             ImGui::SameLine();
-            if(ImGui::Button("Visualize"))
+            if(ImGui::Button("可视化/Visualize"))
             {
                 auto& app = fabtextool::visualizer::instance();
                 fabtex::bitmap_rgba8888 img;
@@ -90,7 +93,7 @@ namespace ImFabtex
                 app.rasterizer.render_radical(img, parsed.radicals()[i]);
                 app.visualize_bitmap(img);
             }
-            if(ImGui::TreeNode("Strokes"))
+            if(ImGui::TreeNode("笔画/Strokes"))
             {
                 for(std::size_t j = 0; j < strokes.size(); ++j)
                 {
@@ -117,7 +120,7 @@ namespace ImFabtex
                     if(!anchors_expanded)
                         ImGui::SameLine();
                     ImGui::PushID(j);
-                    if(ImGui::Button("Visualize"))
+                    if(ImGui::Button("可视化/Visualize"))
                     {
                         auto& app = fabtextool::visualizer::instance();
                         fabtex::bitmap_rgba8888 img;
