@@ -215,7 +215,7 @@ namespace fabtex
             return as_view();
         }
 
-        constexpr friend bool operator==(const basic_bitmap& lhs, const basic_bitmap& rhs) = default;
+        friend bool operator==(const basic_bitmap& lhs, const basic_bitmap& rhs) = default;
 
     private:
         index_type m_size;
