@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
     }
 
     SDL_Window* win = SDL_CreateWindow(
-        "Visualizer",
+        "Fabulae Textile Visualizer v0.1",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         640, 480,
         SDL_WINDOW_MAXIMIZED | SDL_WINDOW_RESIZABLE

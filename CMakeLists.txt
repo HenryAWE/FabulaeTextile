@@ -17,6 +17,7 @@ add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/Zc:__cplusplus>")
 
 project(
     "Fabulae Textile"
+    VERSION 0.1
     LANGUAGES C CXX
 )
 
