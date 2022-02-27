@@ -1,6 +1,7 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
 #include "widgets.hpp"
+#include "visualizer.hpp"
 
 
 namespace ImFabtex
@@ -67,6 +68,8 @@ namespace ImFabtex
         if(!ImGui::Begin("Parsed Data", p_open, window_flags))
             ImGui::End();
 
+        const fabtex::bitmap_rgba8888::index_type bitmap_size{ 512 };
+
         ImGui::Text("笔画/Radical(s)");
         for(std::size_t i = 0; i < parsed.radicals().size(); ++i)
         {
@@ -78,11 +81,21 @@ namespace ImFabtex
                 parsed.radicals()[i].name.c_str(),
                 static_cast<int>(strokes.size())
             );
+            ImGui::SameLine();
+            if(ImGui::Button("Visualize"))
+            {
+                auto& app = fabtextool::visualizer::instance();
+                fabtex::bitmap_rgba8888 img;
+                img.resize(bitmap_size, { 255, 255, 255, 255 });
+                app.rasterizer.render_radical(img, parsed.radicals()[i]);
+                app.visualize_bitmap(img);
+            }
             if(ImGui::TreeNode("Strokes"))
             {
                 for(std::size_t j = 0; j < strokes.size(); ++j)
                 {
                     auto type = strokes[j].type();
+                    bool anchors_expanded = false;
                     if(ImGui::TreeNode(
                         (const void*)j,
                         "Stroke-%d: type=%s(%d)",
@@ -90,6 +103,7 @@ namespace ImFabtex
                         detailed::get_stroke_type_str(type),
                         type
                     )) {
+                        anchors_expanded = true;
                         for(const auto& [src, dst] : strokes[j].connections)
                         {
                             ImGui::BulletText(
@@ -100,6 +114,18 @@ namespace ImFabtex
                         }
                         ImGui::TreePop();
                     }
+                    if(!anchors_expanded)
+                        ImGui::SameLine();
+                    ImGui::PushID(j);
+                    if(ImGui::Button("Visualize"))
+                    {
+                        auto& app = fabtextool::visualizer::instance();
+                        fabtex::bitmap_rgba8888 img;
+                        img.resize(bitmap_size, { 255, 255, 255, 255 });
+                        app.rasterizer.render_stroke(img, strokes[j]);
+                        app.visualize_bitmap(img);
+                    }
+                    ImGui::PopID();
                 }
                 ImGui::TreePop();
             }

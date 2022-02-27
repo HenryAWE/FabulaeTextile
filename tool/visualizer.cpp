@@ -21,11 +21,39 @@ namespace fabtextool
     {
         m_win = win;
         m_ren = ren;
+        rasterizer.line_size = 10;
     }
     void visualizer::quit()
     {
+        if(m_tex)
+        {
+            SDL_DestroyTexture(m_tex);
+            m_tex = nullptr;
+        }
         m_win = nullptr;
         m_ren = nullptr;
+    }
+
+    void visualizer::update_imgui()
+    {
+        auto& io = ImGui::GetIO();
+
+        if(m_show_bitmap_visualizer)
+        {
+            const int flags =
+                ImGuiWindowFlags_NoSavedSettings |
+                ImGuiWindowFlags_AlwaysAutoResize;
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1, 1, 1, 1));
+            if(ImGui::Begin("Bitamp Visualizer", &m_show_bitmap_visualizer, flags))
+            {
+                ImGui::Image(
+                    m_tex,
+                    m_tex_size
+                );
+            }
+            ImGui::End();
+            ImGui::PopStyleColor();
+        }
     }
 
     void visualizer::report_error(
@@ -43,6 +71,21 @@ namespace fabtextool
             msg,
             instance().window()
         );
+    }
+
+    void visualizer::visualize_bitmap(const fabtex::bitmap_rgba8888& bm)
+    {
+        if(m_tex)
+            SDL_DestroyTexture(m_tex);
+        m_tex = SDL_CreateTexture(
+            m_ren, SDL_PIXELFORMAT_ABGR8888,
+            SDL_TEXTUREACCESS_STATIC,
+            bm.size()[0], bm.size()[1]
+        );
+        update_texture(bm, m_tex);
+        m_tex_size = ImFabtex::GetImVec(bm.size());
+
+        m_show_bitmap_visualizer = true;
     }
 }
 
@@ -172,7 +215,10 @@ int main(int argc, char* argv[])
 
         if(appdata.show_about)
             ImFabtex::AboutVisualizer(&appdata.show_about);
+
+        ImGui::SetNextWindowContentSize(ImVec2(400, 400));
         ImFabtex::ShowParsedData(app.parser);
+        app.update_imgui();
 
         filebrowser_open.Display();
         if(filebrowser_open.HasSelected())
