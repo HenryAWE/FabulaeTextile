@@ -1,0 +1,13 @@
+<fabtex>
+    <radical name="gan">
+        <base>
+            <stroke type="h"></stroke>
+            <stroke type="s">
+                <anchor src="b1" dst="../0/b1"></anchor>
+            </stroke>
+            <stroke type="h">
+                <anchor src="b1" dst="../1/b0"></anchor>
+            </stroke>
+        </base>
+    </radical>
+</fabtex>
