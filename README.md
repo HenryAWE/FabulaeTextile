@@ -11,9 +11,14 @@ Simple program for generating images of Chinese characters by components and str
 |---|---|---|
 | RapdidXml | 1.13 | Boost Software License |
 ## Visualizer
+### Font
+| Font Name | Version (At Least) | License |
+|---|---|---|
+| SourceHanSansHWSC-Regular | 2.004 | SIL Open Font License, Version 1.1 |
+### Libraries
 | Library Name | Version (At Least) | License | Note |
 |---|---|---|---|
-| SDL | 2.0.17+ | zlib |  |
+| SDL | 2.0.17 | zlib |  |
 | ImGui | 1.87 | MIT | included in source |
 | imgui-filebrowser | `557baf0` | MIT | included in source |
 | stb | `af1a5bc` | Public Domain | included in source |
@@ -40,6 +45,11 @@ cd build
 cmake ..
 cmake --build .
 ```
+
+# 运行 / Run
+## 运行可视化工具 / Run Visualizer
+- 保证 `tool/SourceHanSansHWSC-Regular.otf` 位于其运行目录下  
+  Please make sure that the `tool/SourceHanSansHWSC-Regular.otf` is in its execution directory
 ## 运行测试 / Run Tests
 ``` sh
 ctest
